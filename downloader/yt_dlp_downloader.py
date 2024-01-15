@@ -19,25 +19,25 @@ class YTDLPDownloader(MetadataDownloader):
             type='video'
         ).execute()
 
-        videos = []
+        metadata_dict = []
         for item in search_response['items']:
-            videos[video_id] = {
+            metadata_dict[video_id] = {
                 'id': item['id']['videoId'],
                 'title': item['snippet']['title'],
                 'channel_id': item['snippet']['channelId']
             }
 
         video_response = youtube.videos().list(
-            id=','.join(videos.keys()),
+            id=','.join(metadata_dict.keys()),
             part='contentDetails,snippet'
         ).execute()
 
         for item in video_response['items']:
             video_id = item['id']
-            videos[video_id].update({
+            metadata_dict[video_id].update({
                 'duration': parse_duration(item['contentDetails']['duration']).total_seconds(),
                 'channel_title': item['snippet']['channelTitle'],
                 'description': item['snippet']['description']
             })
 
-        return videos
+        return metadata_dict
