@@ -7,6 +7,6 @@ def get_downloader(method_name, **kwargs):
         return YTDLPDownloader()
     elif method_name == "google-api":
         api_key = kwargs.get("api_key")
-        return GoogleAPIDownloader(api_key)
+        return GoogleAPIDownloader(api_key = api_key)
     else:
         raise ValueError("Unknown method")
