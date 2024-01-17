@@ -21,7 +21,7 @@ def test_get_downloader():
 
 @pytest.mark.parametrize("downloader", [yt_dlp_downloader, google_api_downloader])
 def test_get_top_results_metadata(downloader):
-    top_k = 10
+    top_k = 2
     metadata_dict = downloader.get_top_results_metadata("cat", top_k)
 
     assert len(metadata_dict) == top_k

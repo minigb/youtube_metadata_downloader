@@ -44,7 +44,8 @@ class GoogleAPIDownloader(MetadataDownloader):
             metadata_dict[video_id].update({
                 'duration': parse_duration(item['contentDetails']['duration']).total_seconds(),
                 'channel_title': item['snippet']['channelTitle'],
-                'description': item['snippet']['description']
+                'description': item['snippet']['description'],
+                'youtube_url': f'https://www.youtube.com/watch?v={video_id}'
             })
 
         return metadata_dict

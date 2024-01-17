@@ -31,7 +31,8 @@ class YTDLPDownloader(MetadataDownloader):
                 'channel_id': video_info['channel_id'],
                 'channel_title': video_info['channel'],
                 'description': video_info['description'],
-                'duration': video_info['duration']
+                'duration': video_info['duration'],
+                'youtube_url': f'https://www.youtube.com/watch?v={video_id}'
             }
 
         return metadata_dict
