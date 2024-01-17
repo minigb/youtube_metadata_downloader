@@ -36,3 +36,11 @@ class YTDLPDownloader(MetadataDownloader):
             }
 
         return metadata_dict
+    
+
+    def get_channel_name(youtube_id: str) -> str:
+        command = ['yt-dlp', '--get-filename', '-o', '"%(channel)s"', youtube_id]
+        result = subprocess.run(command, capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        return output
