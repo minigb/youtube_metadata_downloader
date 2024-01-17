@@ -28,3 +28,33 @@ def test_get_top_results_metadata(downloader):
     for metadata in metadata_dict.values():
         for item_key in downloader.metadata_items:
             assert item_key in metadata.keys()
+
+
+@pytest.mark.parametrize("downloader", [yt_dlp_downloader, google_api_downloader])
+def test_extract_ytid_from_url(downloader):
+    url_list = [
+        "https://www.youtube.com/watch?v=zSQ48zyWZrY",
+        "https://www.youtube.com/watch?v=zSQ48zyWZrY&t=60",
+        "https://www.youtube.com/embed/zSQ48zyWZrY",
+        "https://youtu.be/zSQ48zyWZrY",
+        "https://youtu.be/zSQ48zyWZrY?t=60",
+        "https://m.youtube.com/watch?v=zSQ48zyWZrY"
+    ]
+    ytid = "zSQ48zyWZrY"
+
+    for url in url_list:
+        assert downloader.extract_ytid_from_url(url) == ytid
+
+
+# TODO(minigb): Add test for GoogleAPIDownloader
+@pytest.mark.parametrize("downloader", [yt_dlp_downloader])
+def test_get_channel_name(downloader):
+    url = "https://www.youtube.com/watch?v=zSQ48zyWZrY"
+    assert downloader.get_channel_name_by_url(url) == "HYBE LABELS"
+
+
+# TODO(minigb): Add test for GoogleAPIDownloader
+@pytest.mark.parametrize("downloader", [yt_dlp_downloader])
+def test_get_channel_id(downloader):
+    url = "https://www.youtube.com/watch?v=zSQ48zyWZrY"
+    assert downloader.get_channel_id_by_url(url) == "UC3IZKseVpdzPSBaWxBxundA"
