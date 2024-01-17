@@ -8,7 +8,8 @@ class MetadataDownloader(ABC):
             'duration',
             'id',
             'channel_title',
-            'channel_id'
+            'channel_id',
+            'youtube_url'
         ]
 
 
