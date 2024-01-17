@@ -32,7 +32,29 @@ def test_get_top_results_metadata(downloader):
 
 @pytest.mark.parametrize("downloader", [yt_dlp_downloader, google_api_downloader])
 def test_extract_ytid_from_url(downloader):
-    assert downloader.extract_ytid_from_url("https://www.youtube.com/watch?v=dQw4w9WgXcQ") == "dQw4w9WgXcQ"
-    assert downloader.extract_ytid_from_url("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=60") == "dQw4w9WgXcQ"
-    assert downloader.extract_ytid_from_url("https://www.youtube.com/embed/so9QrPEWG0M") == "so9QrPEWG0M"
-    assert downloader.extract_ytid_from_url("https://youtu.be/dQw4w9WgXcQ") == "dQw4w9WgXcQ"
+    url_list = [
+        "https://www.youtube.com/watch?v=zSQ48zyWZrY",
+        "https://www.youtube.com/watch?v=zSQ48zyWZrY&t=60",
+        "https://www.youtube.com/embed/zSQ48zyWZrY",
+        "https://youtu.be/zSQ48zyWZrY",
+        "https://youtu.be/zSQ48zyWZrY?t=60",
+        "https://m.youtube.com/watch?v=zSQ48zyWZrY"
+    ]
+    ytid = "zSQ48zyWZrY"
+
+    for url in url_list:
+        assert downloader.extract_ytid_from_url(url) == ytid
+
+
+# TODO(minigb): Add test for GoogleAPIDownloader
+@pytest.mark.parametrize("downloader", [yt_dlp_downloader])
+def test_get_channel_name(downloader):
+    url = "https://www.youtube.com/watch?v=zSQ48zyWZrY"
+    assert downloader.get_channel_name_by_url(url) == "HYBE LABELS"
+
+
+# TODO(minigb): Add test for GoogleAPIDownloader
+@pytest.mark.parametrize("downloader", [yt_dlp_downloader])
+def test_get_channel_id(downloader):
+    url = "https://www.youtube.com/watch?v=zSQ48zyWZrY"
+    assert downloader.get_channel_id_by_url(url) == "UC3IZKseVpdzPSBaWxBxundA"
