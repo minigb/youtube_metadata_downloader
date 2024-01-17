@@ -30,9 +30,9 @@ def test_get_top_results_metadata(downloader):
             assert item_key in metadata.keys()
 
 
-def test_extract_ytid_from_url():
-    base_downloader = MetadataDownloader()
-    assert base_downloader.extract_ytid_from_url("https://www.youtube.com/watch?v=dQw4w9WgXcQ") == "dQw4w9WgXcQ"
-    assert base_downloader.extract_ytid_from_url("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=60") == "dQw4w9WgXcQ"
-    assert base_downloader.extract_ytid_from_url("https://www.youtube.com/embed/so9QrPEWG0M") == "so9QrPEWG0M"
-    assert base_downloader.extract_ytid_from_url("https://youtu.be/dQw4w9WgXcQ") == "dQw4w9WgXcQ"
+@pytest.mark.parametrize("downloader", [yt_dlp_downloader, google_api_downloader])
+def test_extract_ytid_from_url(downloader):
+    assert downloader.extract_ytid_from_url("https://www.youtube.com/watch?v=dQw4w9WgXcQ") == "dQw4w9WgXcQ"
+    assert downloader.extract_ytid_from_url("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=60") == "dQw4w9WgXcQ"
+    assert downloader.extract_ytid_from_url("https://www.youtube.com/embed/so9QrPEWG0M") == "so9QrPEWG0M"
+    assert downloader.extract_ytid_from_url("https://youtu.be/dQw4w9WgXcQ") == "dQw4w9WgXcQ"
