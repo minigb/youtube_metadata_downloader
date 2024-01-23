@@ -21,13 +21,14 @@ class YTDLPDownloader(MetadataDownloader):
 
         result = subprocess.run(ytdlp_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
         videos_info = json.loads(result.stdout)
+        search_result_list = videos_info['entries']
 
         if dump_dir is not None:
             with open(f'{dump_dir}/{search_query}.json', 'w') as f:
-                json.dump(videos_info, f, indent=4)
+                json.dump(search_result_list, f, indent=4)
 
         metadata_dict = {}
-        for video_info in videos_info['entries']:
+        for video_info in search_result_list:
             video_id = video_info['id']
             metadata_dict[video_id] = {
                 'id': video_id,

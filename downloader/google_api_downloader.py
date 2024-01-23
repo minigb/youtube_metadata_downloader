@@ -39,12 +39,13 @@ class GoogleAPIDownloader(MetadataDownloader):
             id=','.join(metadata_dict.keys()),
             part='contentDetails,snippet'
         ).execute()
+        search_result_list = video_response['items']
 
         if dump_dir is not None:
             with open(f'{dump_dir}/{query}.json', 'w') as f:
-                json.dump(video_response, f, indent=4)
+                json.dump(search_result_list, f, indent=4)
 
-        for item in video_response['items']:
+        for item in search_result_list:
             video_id = item['id']
             metadata_dict[video_id].update({
                 'duration': parse_duration(item['contentDetails']['duration']).total_seconds(),
