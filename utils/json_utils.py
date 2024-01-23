@@ -12,5 +12,6 @@ def save_json(file_path, data):
     if not os.path.exists(parent_dir):
         os.makedirs(parent_dir)
         print(f"Created {parent_dir}")
+
     with open(file_path, "w") as f:
         json.dump(data, f, indent=4)

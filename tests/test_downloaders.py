@@ -1,10 +1,9 @@
 import pytest
 import tempfile
 import os
-import json
 
 from yt_search_topk import *
-from utils import load_json, save_json
+from utils import load_json
 
 
 downloader_by_yt_dlp = get_downloader("yt-dlp")

@@ -1,10 +1,8 @@
 from googleapiclient.discovery import build
 from isodate import parse_duration
-import json
-import os
 
 from .base import MetadataDownloader
-from utils import load_json, save_json
+from utils import save_json
 
 
 class GoogleAPIDownloader(MetadataDownloader):

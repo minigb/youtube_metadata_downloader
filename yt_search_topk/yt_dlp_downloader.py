@@ -2,7 +2,7 @@ import subprocess
 import json
 
 from .base import MetadataDownloader
-from utils import load_json, save_json
+from utils import save_json
 
 
 class YTDLPDownloader(MetadataDownloader):
