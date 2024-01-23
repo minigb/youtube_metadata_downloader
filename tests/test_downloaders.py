@@ -1,5 +1,8 @@
 import pytest
 from omegaconf import OmegaConf
+import tempfile
+import os
+import json
 
 from downloader import *
 
@@ -58,3 +61,20 @@ def test_get_channel_name(downloader):
 def test_get_channel_id(downloader):
     url = "https://www.youtube.com/watch?v=zSQ48zyWZrY"
     assert downloader.get_channel_id_by_url(url) == "UC3IZKseVpdzPSBaWxBxundA"
+
+
+@pytest.mark.parametrize("downloader", [yt_dlp_downloader])
+def test_dump_dir(downloader):
+    query = 'cat'
+    top_k = 2
+    dump_dir = tempfile.mkdtemp()
+    _ = downloader.get_top_results_metadata(query, top_k, dump_dir)
+
+    assert os.path.exists(f"{dump_dir}/{query}.json")
+    metadata_dump = {}
+    with open(f"{dump_dir}/{query}.json", "r") as f:
+        metadata_dump = json.load(f)
+    assert len(metadata_dump) == top_k
+
+    os.remove(f"{dump_dir}/{query}.json")
+    os.rmdir(dump_dir)
