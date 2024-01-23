@@ -7,7 +7,7 @@ from yt_search_topk import *
 
 
 downloader_by_yt_dlp = get_downloader("yt-dlp")
-downloader_by_google_api = get_downloader("google-api")
+downloader_by_google_api = get_downloader("google-api", api_key_path = 'google_api.yaml')
 
 
 def test_get_downloader():
@@ -64,13 +64,14 @@ def test_dump_dir(downloader):
     query = 'cat'
     top_k = 2
     dump_dir = tempfile.mkdtemp()
-    _ = downloader.get_top_results_metadata(query, top_k, dump_dir)
+    dump_path = f"{dump_dir}/{query}.json"
+    _ = downloader.get_top_results_metadata(query, top_k, dump_path)
 
-    assert os.path.exists(f"{dump_dir}/{query}.json")
+    assert os.path.exists(dump_path)
     metadata_dump = {}
-    with open(f"{dump_dir}/{query}.json", "r") as f:
+    with open(dump_path, "r") as f:
         metadata_dump = json.load(f)
     assert len(metadata_dump) == top_k
 
-    os.remove(f"{dump_dir}/{query}.json")
+    os.remove(dump_path)
     os.rmdir(dump_dir)
