@@ -25,7 +25,7 @@ class YTDLPDownloader(MetadataDownloader):
         search_result_list = videos_info['entries']
 
         if dump_path is not None:
-            save_json(dump_path, search_result_list)
+            save_json(search_result_list, dump_path)
 
         metadata_dict = {}
         for video_info in search_result_list:

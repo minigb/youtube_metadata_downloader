@@ -42,7 +42,7 @@ class GoogleAPIDownloader(MetadataDownloader):
         search_result_list = video_response['items']
 
         if dump_path is not None:
-            save_json(dump_path, search_result_list)
+            save_json(search_result_list, dump_path)
 
         for item in search_result_list:
             video_id = item['id']

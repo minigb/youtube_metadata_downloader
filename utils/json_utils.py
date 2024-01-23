@@ -7,7 +7,7 @@ def load_json(file_path):
         return json.load(f)
     
 
-def save_json(file_path, data):
+def save_json(data, file_path):
     parent_dir = os.path.dirname(file_path)
     if not os.path.exists(parent_dir):
         os.makedirs(parent_dir)
