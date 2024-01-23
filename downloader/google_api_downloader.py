@@ -1,5 +1,6 @@
 from googleapiclient.discovery import build
 from isodate import parse_duration
+import json
 
 from .base import MetadataDownloader
 
@@ -10,7 +11,7 @@ class GoogleAPIDownloader(MetadataDownloader):
         self.api_key = api_key
 
 
-    def get_top_results_metadata(self, query: str, top_k: int = 10) -> dict:
+    def get_top_results_metadata(self, query: str, top_k: int = 10, dump_dir = None) -> dict:
         """
         Note that 101 units of cost is needed per query.
         100 for the search().list and 1 for videos().list.
@@ -38,6 +39,10 @@ class GoogleAPIDownloader(MetadataDownloader):
             id=','.join(metadata_dict.keys()),
             part='contentDetails,snippet'
         ).execute()
+
+        if dump_dir is not None:
+            with open(f'{dump_dir}/{query}.json', 'w') as f:
+                json.dump(video_response, f, indent=4)
 
         for item in video_response['items']:
             video_id = item['id']

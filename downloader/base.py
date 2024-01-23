@@ -15,7 +15,7 @@ class MetadataDownloader(ABC):
 
 
     @abstractmethod
-    def get_top_results_metadata(self, query, top_k):
+    def get_top_results_metadata(self, query, top_k, dump_dir):
         pass
 
 
