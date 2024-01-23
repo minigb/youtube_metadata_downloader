@@ -1,5 +1,4 @@
 import pytest
-from omegaconf import OmegaConf
 import tempfile
 import os
 import json
@@ -8,10 +7,7 @@ from yt_search_topk import *
 
 
 yt_dlp_downloader = get_downloader("yt-dlp")
-
-api_config = OmegaConf.load('google_api.yaml')
-api_key = api_config.api_key
-google_api_downloader = get_downloader("google-api", api_key = api_key)
+google_api_downloader = get_downloader("google-api")
 
 
 def test_get_downloader():
