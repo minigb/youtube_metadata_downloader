@@ -1,28 +1,24 @@
 import pytest
-from omegaconf import OmegaConf
 import tempfile
 import os
 import json
 
-from downloader import *
+from yt_search_topk import *
 
 
-yt_dlp_downloader = get_downloader("yt-dlp")
-
-api_config = OmegaConf.load('google_api.yaml')
-api_key = api_config.api_key
-google_api_downloader = get_downloader("google-api", api_key = api_key)
+downloader_by_yt_dlp = get_downloader("yt-dlp")
+downloader_by_google_api = get_downloader("google-api", api_key_path = 'google_api.yaml')
 
 
 def test_get_downloader():
-    assert isinstance(yt_dlp_downloader, YTDLPDownloader)
-    assert isinstance(google_api_downloader, GoogleAPIDownloader)
+    assert isinstance(downloader_by_yt_dlp, YTDLPDownloader)
+    assert isinstance(downloader_by_google_api, GoogleAPIDownloader)
 
     with pytest.raises(ValueError):
         get_downloader("unknown_method")
 
 
-@pytest.mark.parametrize("downloader", [yt_dlp_downloader, google_api_downloader])
+@pytest.mark.parametrize("downloader", [downloader_by_yt_dlp, downloader_by_google_api])
 def test_get_top_results_metadata(downloader):
     top_k = 2
     metadata_dict = downloader.get_top_results_metadata("cat", top_k)
@@ -33,7 +29,7 @@ def test_get_top_results_metadata(downloader):
             assert item_key in metadata.keys()
 
 
-@pytest.mark.parametrize("downloader", [yt_dlp_downloader, google_api_downloader])
+@pytest.mark.parametrize("downloader", [downloader_by_yt_dlp, downloader_by_google_api])
 def test_extract_ytid_from_url(downloader):
     url_list = [
         "https://www.youtube.com/watch?v=zSQ48zyWZrY",
@@ -50,31 +46,32 @@ def test_extract_ytid_from_url(downloader):
 
 
 # TODO(minigb): Add test for GoogleAPIDownloader
-@pytest.mark.parametrize("downloader", [yt_dlp_downloader])
+@pytest.mark.parametrize("downloader", [downloader_by_yt_dlp])
 def test_get_channel_name(downloader):
     url = "https://www.youtube.com/watch?v=zSQ48zyWZrY"
     assert downloader.get_channel_name_by_url(url) == "HYBE LABELS"
 
 
 # TODO(minigb): Add test for GoogleAPIDownloader
-@pytest.mark.parametrize("downloader", [yt_dlp_downloader])
+@pytest.mark.parametrize("downloader", [downloader_by_yt_dlp])
 def test_get_channel_id(downloader):
     url = "https://www.youtube.com/watch?v=zSQ48zyWZrY"
     assert downloader.get_channel_id_by_url(url) == "UC3IZKseVpdzPSBaWxBxundA"
 
 
-@pytest.mark.parametrize("downloader", [yt_dlp_downloader])
+@pytest.mark.parametrize("downloader", [downloader_by_google_api, downloader_by_yt_dlp])
 def test_dump_dir(downloader):
     query = 'cat'
     top_k = 2
     dump_dir = tempfile.mkdtemp()
-    _ = downloader.get_top_results_metadata(query, top_k, dump_dir)
+    dump_path = f"{dump_dir}/{query}.json"
+    _ = downloader.get_top_results_metadata(query, top_k, dump_path)
 
-    assert os.path.exists(f"{dump_dir}/{query}.json")
+    assert os.path.exists(dump_path)
     metadata_dump = {}
-    with open(f"{dump_dir}/{query}.json", "r") as f:
+    with open(dump_path, "r") as f:
         metadata_dump = json.load(f)
     assert len(metadata_dump) == top_k
 
-    os.remove(f"{dump_dir}/{query}.json")
+    os.remove(dump_path)
     os.rmdir(dump_dir)

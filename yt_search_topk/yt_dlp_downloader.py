@@ -9,7 +9,7 @@ class YTDLPDownloader(MetadataDownloader):
         super().__init__()
 
 
-    def get_top_results_metadata(self, search_query, top_k = 10, dump_dir = None) -> dict:
+    def get_top_results_metadata(self, search_query, top_k = 10, dump_path = None) -> dict:
         ytdlp_command = [
             'yt-dlp',
             f'ytsearch{top_k}:' + search_query,  # Search for top 10 videos
@@ -23,8 +23,8 @@ class YTDLPDownloader(MetadataDownloader):
         videos_info = json.loads(result.stdout)
         search_result_list = videos_info['entries']
 
-        if dump_dir is not None:
-            with open(f'{dump_dir}/{search_query}.json', 'w') as f:
+        if dump_path is not None:
+            with open(dump_path, 'w') as f:
                 json.dump(search_result_list, f, indent=4)
 
         metadata_dict = {}

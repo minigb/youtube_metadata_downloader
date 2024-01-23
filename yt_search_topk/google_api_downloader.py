@@ -11,7 +11,7 @@ class GoogleAPIDownloader(MetadataDownloader):
         self.api_key = api_key
 
 
-    def get_top_results_metadata(self, query: str, top_k: int = 10, dump_dir = None) -> dict:
+    def get_top_results_metadata(self, query: str, top_k: int = 10, dump_path = None) -> dict:
         """
         Note that 101 units of cost is needed per query.
         100 for the search().list and 1 for videos().list.
@@ -41,8 +41,8 @@ class GoogleAPIDownloader(MetadataDownloader):
         ).execute()
         search_result_list = video_response['items']
 
-        if dump_dir is not None:
-            with open(f'{dump_dir}/{query}.json', 'w') as f:
+        if dump_path is not None:
+            with open(dump_path, 'w') as f:
                 json.dump(search_result_list, f, indent=4)
 
         for item in search_result_list:
