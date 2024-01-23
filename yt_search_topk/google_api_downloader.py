@@ -1,8 +1,10 @@
 from googleapiclient.discovery import build
 from isodate import parse_duration
 import json
+import os
 
 from .base import MetadataDownloader
+from utils import load_json, save_json
 
 
 class GoogleAPIDownloader(MetadataDownloader):
@@ -42,8 +44,7 @@ class GoogleAPIDownloader(MetadataDownloader):
         search_result_list = video_response['items']
 
         if dump_path is not None:
-            with open(dump_path, 'w') as f:
-                json.dump(search_result_list, f, indent=4)
+            save_json(dump_path, search_result_list)
 
         for item in search_result_list:
             video_id = item['id']
