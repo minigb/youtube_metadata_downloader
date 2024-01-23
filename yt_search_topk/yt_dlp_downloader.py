@@ -2,6 +2,7 @@ import subprocess
 import json
 
 from .base import MetadataDownloader
+from utils import save_json
 
 
 class YTDLPDownloader(MetadataDownloader):
@@ -24,8 +25,7 @@ class YTDLPDownloader(MetadataDownloader):
         search_result_list = videos_info['entries']
 
         if dump_path is not None:
-            with open(dump_path, 'w') as f:
-                json.dump(search_result_list, f, indent=4)
+            save_json(search_result_list, dump_path)
 
         metadata_dict = {}
         for video_info in search_result_list:

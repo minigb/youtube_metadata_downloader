@@ -1,9 +1,9 @@
 import pytest
 import tempfile
 import os
-import json
 
 from yt_search_topk import *
+from utils import load_json
 
 
 downloader_by_yt_dlp = get_downloader("yt-dlp")
@@ -68,9 +68,8 @@ def test_dump_dir(downloader):
     _ = downloader.get_top_results_metadata(query, top_k, dump_path)
 
     assert os.path.exists(dump_path)
-    metadata_dump = {}
-    with open(dump_path, "r") as f:
-        metadata_dump = json.load(f)
+    
+    metadata_dump = load_json(dump_path)
     assert len(metadata_dump) == top_k
 
     os.remove(dump_path)
