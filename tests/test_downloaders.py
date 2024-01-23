@@ -4,7 +4,7 @@ import tempfile
 import os
 import json
 
-from downloader import *
+from yt_search_topk import *
 
 
 yt_dlp_downloader = get_downloader("yt-dlp")
