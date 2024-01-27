@@ -48,9 +48,10 @@ class GoogleAPIDownloader(MetadataDownloader):
     def get_videos_metadata(self, ytids, refines = True):
         if isinstance(ytids, str):
             ytids = [ytids]
+        assert isinstance(ytids, list)
         
         video_response = self.youtube_resource.videos().list(
-            id=ytids,
+            id=','.join(ytids),
             part='contentDetails,snippet'
         ).execute()
 
