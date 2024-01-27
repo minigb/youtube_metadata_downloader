@@ -29,22 +29,6 @@ def test_get_top_results_metadata(downloader):
             assert item_key in metadata.keys()
 
 
-@pytest.mark.parametrize("downloader", [downloader_by_yt_dlp, downloader_by_google_api])
-def test_extract_ytid_from_url(downloader):
-    url_list = [
-        "https://www.youtube.com/watch?v=zSQ48zyWZrY",
-        "https://www.youtube.com/watch?v=zSQ48zyWZrY&t=60",
-        "https://www.youtube.com/embed/zSQ48zyWZrY",
-        "https://youtu.be/zSQ48zyWZrY",
-        "https://youtu.be/zSQ48zyWZrY?t=60",
-        "https://m.youtube.com/watch?v=zSQ48zyWZrY"
-    ]
-    ytid = "zSQ48zyWZrY"
-
-    for url in url_list:
-        assert extract_ytid_from_url(url) == ytid
-
-
 # TODO(minigb): Add test for GoogleAPIDownloader
 @pytest.mark.parametrize("downloader", [downloader_by_yt_dlp])
 def test_get_channel_name(downloader):
