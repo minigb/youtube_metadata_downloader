@@ -29,20 +29,19 @@ def test_get_top_results_metadata(downloader):
             assert item_key in metadata.keys()
 
 
-@pytest.mark.parametrize("downloader", [downloader_by_yt_dlp, downloader_by_google_api])
-def test_extract_ytid_from_url(downloader):
-    url_list = [
-        "https://www.youtube.com/watch?v=zSQ48zyWZrY",
-        "https://www.youtube.com/watch?v=zSQ48zyWZrY&t=60",
-        "https://www.youtube.com/embed/zSQ48zyWZrY",
-        "https://youtu.be/zSQ48zyWZrY",
-        "https://youtu.be/zSQ48zyWZrY?t=60",
-        "https://m.youtube.com/watch?v=zSQ48zyWZrY"
-    ]
-    ytid = "zSQ48zyWZrY"
+# TODO(minigb): Add teset for YTDLPDownloader
+@pytest.mark.parametrize("downloader", [downloader_by_google_api])
+@pytest.mark.parametrize("ytids, length", [
+    (["zSQ48zyWZrY"], 1),
+    (["-GQg25oP0S4", "zSQ48zyWZrY"], 2)
+])
+def test_get_videos_metadata(downloader, ytids, length):
+    metadata_dict = downloader.get_videos_metadata(ytids)
 
-    for url in url_list:
-        assert downloader.extract_ytid_from_url(url) == ytid
+    assert len(metadata_dict) == length
+    for metadata in metadata_dict.values():
+        for item_key in downloader.metadata_items:
+            assert item_key in metadata.keys()
 
 
 # TODO(minigb): Add test for GoogleAPIDownloader

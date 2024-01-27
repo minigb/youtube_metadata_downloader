@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from .base import MetadataDownloader
+from .utils import extract_ytid_from_url
 
 
 class YTDLPDownloader(MetadataDownloader):
@@ -44,10 +45,15 @@ class YTDLPDownloader(MetadataDownloader):
             }
 
         return metadata_dict
+
+
+    # TODO(minigb): Implement this
+    def get_videos_metadata(self, ytids, refines = True):
+        pass
     
 
     def get_channel_name_by_url(self, youtube_url) -> str:
-        youtube_id = self.extract_ytid_from_url(youtube_url)
+        youtube_id = extract_ytid_from_url(youtube_url)
         command = ['yt-dlp', '--get-filename', '-o', "%(channel)s", youtube_id]
         result = subprocess.run(command, capture_output=True, text=True)
         output = result.stdout.strip()
