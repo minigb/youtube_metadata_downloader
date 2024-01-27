@@ -42,7 +42,7 @@ def test_extract_ytid_from_url(downloader):
     ytid = "zSQ48zyWZrY"
 
     for url in url_list:
-        assert downloader.extract_ytid_from_url(url) == ytid
+        assert extract_ytid_from_url(url) == ytid
 
 
 # TODO(minigb): Add test for GoogleAPIDownloader
