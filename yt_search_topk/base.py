@@ -19,5 +19,5 @@ class MetadataDownloader(ABC):
 
 
     @abstractmethod
-    def get_video_metadata(self, youtube_url):
+    def get_videos_metadata(self, ytids, refines = True):
         pass

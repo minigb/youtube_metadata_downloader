@@ -45,6 +45,11 @@ class YTDLPDownloader(MetadataDownloader):
             }
 
         return metadata_dict
+
+
+    # TODO(minigb): Implement this
+    def get_videos_metadata(self, ytids, refines = True):
+        pass
     
 
     def get_channel_name_by_url(self, youtube_url) -> str:
